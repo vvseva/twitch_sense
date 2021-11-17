@@ -1,0 +1,101 @@
+---
+title: "Untitled"
+author: "Suschevskiy Vsevolod"
+date: "11/17/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+```{r}
+library(websocket)
+source("secret.R")
+```
+
+```{r}
+ws <- WebSocket$new("wss://irc-ws.chat.twitch.tv:443", autoConnect = F)
+ws$connect()
+ws$onMessage(function(event) {
+    if (str_detect(event$data, "PING :tmi.twitch.tv")) {
+    ws$send("PONG :tmi.twitch.tv")
+    } else {  
+    cat("Client got msg: ", event$data, "\n")
+      }
+})
+
+ws$send(pass_auth)
+
+ws$send(nick)
+
+ws$send("CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership")
+
+ws$send("JOIN #vvseva")
+
+ws$send("PRIVMSG #vvseva :проверяю IRC")
+
+
+ws$close()
+```
+
+```{r}
+library(mongolite)
+
+
+m <- mongo(collection = "test",  
+           db = "test", 
+           url ="mongodb://localhost")
+```
+
+```{r}
+print(m)
+m$info()$server$uptime
+
+m <- mongo(collection = "seva_test_logs")
+
+test_ins = tibble(time = Sys.time(), message = "hi message 2", id = m$count() +1)
+
+m$insert(test_ins)
+```
+
+```{r}
+# str_glue('{{"time":{{"$gt":{{"$date":"{now}"}}}}}}', 
+#          now = Sys.time()-90)
+test_out <- 
+  m$find('{"time":{"$gt":{"$date":"2021-02-01T00:00:00Z"}}}')
+
+test_out2 <- 
+  m$find(str_glue('{{"time":{{"$gt":{{"$date":"{now}Z"}}}}}}', 
+         now = Sys.time()-200) |> str_replace(" ", "T"))
+test_out2
+
+test_out3 <- 
+  m$find(str_glue('{{"id":{{"$gt": {last_ten} }}}}', last_ten = m$count() - 10))
+
+test_out3
+
+# m$remove('{}')
+```
+
+```{r}
+library(ggwordcloud)
+library(tidytext)
+```
+
+```{r}
+love_words_small = test_out3 %>%
+  unnest_tokens(word, message, token = "words") |> 
+  count(word)
+love_words_small
+```
+
+
+```{r}
+set.seed(42)
+ggplot(love_words_small, aes(label = word, size = n)) +
+  geom_text_wordcloud_area(area_corr_power = 1) +
+  scale_size_area(max_size = 24) +
+  theme_minimal()
+```
+
