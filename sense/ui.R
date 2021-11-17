@@ -18,16 +18,25 @@ shinyUI(fluidPage(
     # Sidebar with a slider input for number of bins
     sidebarLayout(
         sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
+            # sliderInput("bins",
+            #             "Number of bins:",
+            #             min = 1,
+            #             max = 50,
+            #             value = 30)
+          textInput(inputId = "channel", "Channel name"),
+          actionButton("channel_btn", "start to collect"),
+          
+          sliderInput("messages_slider",
+                      "Number of messages",
+                      min = 1,
+                      max = 50,
+                      value = 30),
+          actionButton("draw_btn", "Draw wordcloud")
         ),
 
         # Show a plot of the generated distribution
         mainPanel(
-            plotOutput("distPlot")
+            plotOutput("wordcloud")
         )
     )
 ))
