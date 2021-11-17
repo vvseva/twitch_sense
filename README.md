@@ -3,7 +3,7 @@
 
 ok so that is a tiny project to proof an idea
 
-![chat](images/img.png)
+![chat](images/chat.png)
 
 with the help of twitch [IRC](https://dev.twitch.tv/docs/irc) that grab chat messages
 
