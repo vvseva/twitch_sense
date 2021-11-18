@@ -13,6 +13,6 @@ stream them to a local server, (mongoDB db in my case)
 
 than makes simple viz for the last 90 seconds on demand
 
-![cloud](images/output.png)
+![cloud](images/shiny_mvp.png)
 
 while being wrapped into a shiny application
