@@ -3,16 +3,16 @@
 
 ok so that is a tiny project to proof an idea
 
-![](images/chat.png | width=100)
+![](images/chat.png)
 
 with the help of twitch [IRC](https://dev.twitch.tv/docs/irc) that grab chat messages
 
-![IRC](images/IRC.png | width=100)
+![IRC](images/IRC.png)
 
 stream them to a local server, (mongoDB db in my case)
 
 than makes simple viz for the last 90 seconds on demand
 
-![cloud](images/output.png | width=100)
+![cloud](images/output.png)
 
 while being wrapped into a shiny application
